@@ -5,7 +5,7 @@ from io import BytesIO
 import numpy as np
 
 def predict(input_image):
-    input_image = Image.open(input_image).convert('RGB')
+    input_image = Image.open(BytesIO(input_image)).convert('RGB')
     image = np.asarray(input_image, dtype=np.float32)
 
     image = image.transpose(2, 0, 1)

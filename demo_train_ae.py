@@ -43,7 +43,7 @@ with tf.Session() as sess:
 
 
     def predict(input_image):
-        input_image = Image.open(BytesIO(input_image)).convert('RGB')
+        input_image = Image.open(input_image).convert('RGB')
 
         input_image = input_image.resize((height, width), Image.ANTIALIAS)
 
@@ -54,13 +54,13 @@ with tf.Session() as sess:
 
         image = image.transpose(2, 0, 1)
         image = np.mean(image,axis=0).reshape((1,-1))
-        print(image.shape)
+        image /= 255
 
         sess.run(optimizer,feed_dict={X:image})
-        pred_raw = sess.run(Y_pred,feed_dict={X:image})[0].reshape((height,width))
+
+        pred_raw = sess.run(Y_pred,feed_dict={X:image})[0].reshape((height,width)) * 255
         result = np.stack((pred_raw,pred_raw,pred_raw),axis=0)
 
-        print(result.shape)
 
 
         result = result.transpose((1, 2, 0))
@@ -71,4 +71,6 @@ with tf.Session() as sess:
         med.save(output_image, format='JPEG')
         return output_image.getvalue()
 
+    #with open("test.jpg","rb") as f:
+    #    predict(f)
     riseml.serve(predict, port=os.environ.get('PORT'))

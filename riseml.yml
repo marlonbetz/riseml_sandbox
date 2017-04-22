@@ -7,7 +7,7 @@ deploy:
     - pip install riseml
   gpu: no
   run:
-    - python demo.py
+    - python demo_mean.py
   input:
     image: image/jpeg
   output:

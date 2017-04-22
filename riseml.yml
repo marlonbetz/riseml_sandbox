@@ -7,11 +7,11 @@ deploy:
     - pip install --upgrade numpy riseml Pillow tensorflow
   gpu: no
   run:
-    - python demo_mean.py
+    - python demo_predict_ae.py
   input:
     image: image/jpeg
   output:
     image: image/jpeg
   demo:
-    title: mean rgb
-description: just returns mean rbg values of input image
+    title: feed forward AE
+description: feeds image through simple AE

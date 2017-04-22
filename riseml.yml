@@ -4,8 +4,8 @@ deploy:
     install:
     - apt-get update && apt-get install -y python-pip wget libtiff5-dev zlib1g-dev
     - pip install --upgrade pip
-    - pip install --upgrade numpy riseml Pillow tensorflow
-  gpu: no
+    - pip install --upgrade numpy riseml Pillow tensorflow-gpu
+  gpu: yes
   run:
     - python demo_train_ae.py
   input:

@@ -1,0 +1,16 @@
+deploy:
+  image:
+    name: nvidia/cuda:8.0-cudnn5-devel
+    install:
+    - apt-get update && apt-get install -y python-pip wget libtiff5-dev zlib1g-dev
+    - pip install riseml numpy scipy chainer Pillow
+  gpu: no
+  run:
+    - python demo.py
+  input:
+    image: image/jpeg
+  output:
+    image: image/jpeg
+  demo:
+    title: idendity
+description: just returns input image

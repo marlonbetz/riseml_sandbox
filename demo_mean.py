@@ -3,7 +3,6 @@ import riseml
 from PIL import Image
 from io import BytesIO
 import numpy as np
-import  matplotlib.pyplot as plt
 
 def predict(input_image):
     input_image = Image.open(input_image).convert('RGB')

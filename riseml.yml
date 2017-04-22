@@ -13,5 +13,5 @@ deploy:
   output:
     image: image/jpeg
   demo:
-    title: idendity
-description: just returns input image
+    title: mean rgb
+description: just returns mean rbg values of input image

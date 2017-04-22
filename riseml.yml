@@ -3,11 +3,11 @@ deploy:
     name: nvidia/cuda:8.0-cudnn5-devel
     install:
     - apt-get update && apt-get install -y python-pip wget libtiff5-dev zlib1g-dev
-    - pip3 install --upgrade pip
-    - pip3 install --upgrade numpy riseml
+    - pip install --upgrade pip
+    - pip install --upgrade numpy riseml Pillow
   gpu: no
   run:
-    - python3 demo_mean.py
+    - python demo_mean.py
   input:
     image: image/jpeg
   output:

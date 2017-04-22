@@ -43,7 +43,7 @@ with tf.Session() as sess:
 
 
     def predict(input_image):
-        input_image = Image.open(input_image).convert('RGB')
+        input_image = Image.open(BytesIO(input_image)).convert('RGB')
 
         input_image = input_image.resize((height, width), Image.ANTIALIAS)
 

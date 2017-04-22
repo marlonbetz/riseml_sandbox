@@ -4,7 +4,7 @@ deploy:
     install:
     - apt-get update && apt-get install -y python-pip wget libtiff5-dev zlib1g-dev
     - pip install --upgrade pip
-    - pip install numpy riseml
+    - pip install --upgrade numpy riseml PIL
   gpu: no
   run:
     - python demo_mean.py

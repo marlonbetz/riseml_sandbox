@@ -6,6 +6,9 @@ import numpy as np
 
 def predict(input_image):
     input_image = Image.open(BytesIO(input_image)).convert('RGB')
+
+    input_image.resize((512, 512), Image.ANTIALIAS)
+
     image = np.asarray(input_image, dtype=np.float32)
 
     image = image.transpose(2, 0, 1)

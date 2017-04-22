@@ -4,6 +4,8 @@ from PIL import Image
 from io import BytesIO
 import numpy as np
 
+import tensorflow as tf
+
 def predict(input_image):
     input_image = Image.open(BytesIO(input_image)).convert('RGB')
 

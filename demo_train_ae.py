@@ -56,6 +56,7 @@ with tf.Session() as sess:
         image = np.mean(image,axis=0).reshape((1,-1))
         print(image.shape)
 
+        sess.run(optimizer,feed_dict={X:image})
         pred_raw = sess.run(Y_pred,feed_dict={X:image})[0].reshape((height,width))
         result = np.stack((pred_raw,pred_raw,pred_raw),axis=0)
 

@@ -7,11 +7,11 @@ deploy:
     - pip install --upgrade numpy riseml Pillow tensorflow
   gpu: no
   run:
-    - python demo_predict_ae.py
+    - python demo_train_ae.py
   input:
     image: image/jpeg
   output:
     image: image/jpeg
   demo:
-    title: feed forward AE
-description: feeds image through simple AE
+    title: online training AE
+description: trains simple AE online

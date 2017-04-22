@@ -6,23 +6,24 @@ import numpy as np
 
 import tensorflow as tf
 
-def predict(input_image):
-    input_image = Image.open(BytesIO(input_image)).convert('RGB')
+with tf.Session() as sess:
+    def predict(input_image):
+        input_image = Image.open(BytesIO(input_image)).convert('RGB')
 
-    input_image.resize((512, 512), Image.ANTIALIAS)
+        input_image.resize((512, 512), Image.ANTIALIAS)
 
-    image = np.asarray(input_image, dtype=np.float32)
+        image = np.asarray(input_image, dtype=np.float32)
 
-    image = image.transpose(2, 0, 1)
-    image = np.tile(np.mean(image,axis=0),reps=(3,1,1))
-    image = image.reshape((1,) + image.shape)
+        image = image.transpose(2, 0, 1)
+        image = np.tile(np.mean(image,axis=0),reps=(3,1,1))
+        image = image.reshape((1,) + image.shape)
 
-    result = np.uint8(image[0].transpose((1, 2, 0)))
+        result = np.uint8(image[0].transpose((1, 2, 0)))
 
-    med = Image.fromarray(result)
+        med = Image.fromarray(result)
 
-    output_image = BytesIO()
-    med.save(output_image, format='JPEG')
-    return output_image.getvalue()
+        output_image = BytesIO()
+        med.save(output_image, format='JPEG')
+        return output_image.getvalue()
 
-riseml.serve(predict, port=os.environ.get('PORT'))
+    riseml.serve(predict, port=os.environ.get('PORT'))

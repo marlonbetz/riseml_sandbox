@@ -7,11 +7,11 @@ deploy:
     - pip install --upgrade numpy riseml Pillow tensorflow-gpu
   gpu: yes
   run:
-    - python demo_train_vae.py
+    - python demo_train_gan.py
   input:
     image: image/jpeg
   output:
     image: image/jpeg
   demo:
-    title: online training VAE
-description: trains simple VAE online
+    title: online training GAN
+description: trains simple GAN online

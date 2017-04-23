@@ -8,8 +8,8 @@ import tensorflow as tf
 
 n_intermediate = 1024
 dim_z = 2
-height = 28
-width = 28
+height = 128
+width = 128
 n_features = height*width
 
 
@@ -118,7 +118,7 @@ with tf.Session() as sess:
         sess.run(optimizer_generator, feed_dict={n_samples :1})
 
 
-        pred_raw = sess.run(y_generator, feed_dict={n_samples :1}) * 255
+        pred_raw = sess.run(y_generator, feed_dict={n_samples :1})[0].reshape((height,width))  * 255
         result = np.stack((pred_raw,pred_raw,pred_raw),axis=0)
 
 

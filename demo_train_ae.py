@@ -8,7 +8,7 @@ import tensorflow as tf
 
 height = 128
 width = 128
-dim_hidden = 1024
+dim_hidden = 2
 X  = tf.placeholder(dtype=tf.float32, shape=[None,height*width])
 
 

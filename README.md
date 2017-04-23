@@ -1,2 +1,2 @@
 # riseml_sandbox
-some mlRise stuff
+some riseml stuff

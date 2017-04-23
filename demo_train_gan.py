@@ -6,7 +6,7 @@ import numpy as np
 import tensorflow as tf
 
 
-n_intermediate = 100
+n_intermediate = 1024
 dim_z = 2
 height = 128
 width = 128

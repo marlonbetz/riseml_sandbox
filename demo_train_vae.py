@@ -72,7 +72,7 @@ b2_decoder = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
                         name="b2_decoder")
 
 
-Y_logits =  tf.matmul( tf.nn.relu(tf.matmul(X,w1_encoder)+b1_encoder),w2_decoder)+b2_decoder
+Y_logits =  tf.matmul( tf.nn.relu(tf.matmul(z,w1_decoder)+b1_decoder),w2_decoder)+b2_decoder
 
 
 Y_pred = tf.nn.sigmoid(Y_logits)

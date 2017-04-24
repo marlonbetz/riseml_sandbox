@@ -77,7 +77,8 @@ Y_logits =  tf.matmul( tf.nn.relu(tf.matmul(z,w1_decoder)+b1_decoder),w2_decoder
 
 Y_pred = tf.nn.sigmoid(Y_logits)
 
-loss = tf.nn.sigmoid_cross_entropy_with_logits(logits=Y_logits,labels=X) + kl_divergence
+loss = tf.reduce_mean(
+    tf.reduce_sum(tf.nn.sigmoid_cross_entropy_with_logits(logits=Y_logits, labels=X), axis=-1) + kl_divergence)
 
 optimizer = tf.train.AdamOptimizer().minimize(loss)
 

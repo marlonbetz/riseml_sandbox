@@ -60,7 +60,7 @@ w1_decoder = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
                         name="w1_decoder")
 
 b1_decoder = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
-                        shape=[dim_latent],
+                        shape=[dim_hidden],
                         name="b1_decoder")
 
 w2_decoder = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),

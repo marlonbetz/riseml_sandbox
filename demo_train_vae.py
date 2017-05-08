@@ -100,7 +100,7 @@ with tf.Session() as sess:
 
         image = np.asarray(input_image, dtype=np.float32)
 
-        image = image.transpose(2, 0, 1)
+        image = image.transpose(2, 0, 1).reshape((1,-1))
         #image = np.mean(image,axis=0).reshape((1,-1))
         image /= 255
 

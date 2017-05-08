@@ -16,7 +16,7 @@ log_var_epsilon = 1
 dim_latent = 2
 beta = 10
 
-X  = tf.placeholder(dtype=tf.float32, shape=[None,height*width])
+X  = tf.placeholder(dtype=tf.float32, shape=[None,height*width*n_colors])
 
 epsilon = tf.random_normal(shape=[tf.shape(X)[0],dim_latent],mean=0,stddev=log_var_epsilon)
 

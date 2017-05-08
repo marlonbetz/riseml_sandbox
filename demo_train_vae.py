@@ -10,6 +10,7 @@ import tensorflow as tf
 
 height = 128
 width = 128
+n_colors = 3
 dim_hidden = 1024
 log_var_epsilon = 1
 dim_latent = 2
@@ -22,7 +23,7 @@ epsilon = tf.random_normal(shape=[tf.shape(X)[0],dim_latent],mean=0,stddev=log_v
 
 
 w1_encoder = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
-                        shape=[height*width, dim_hidden],
+                        shape=[height*width*n_colors, dim_hidden],
                         name="w1_encoder")
 
 b1_encoder = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
@@ -65,11 +66,11 @@ b1_decoder = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
                         name="b1_decoder")
 
 w2_decoder = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
-                        shape=[dim_hidden,height*width],
+                        shape=[dim_hidden,height*width*n_colors],
                         name="w2_decoder")
 
 b2_decoder = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
-                        shape=[height*width],
+                        shape=[height*width*n_colors],
                         name="b2_decoder")
 
 
@@ -100,13 +101,14 @@ with tf.Session() as sess:
         image = np.asarray(input_image, dtype=np.float32)
 
         image = image.transpose(2, 0, 1)
-        image = np.mean(image,axis=0).reshape((1,-1))
+        #image = np.mean(image,axis=0).reshape((1,-1))
         image /= 255
 
         sess.run(optimizer,feed_dict={X:image})
 
-        pred_raw = sess.run(Y_pred,feed_dict={X:image})[0].reshape((height,width)) * 255
-        result = np.stack((pred_raw,pred_raw,pred_raw),axis=0)
+        pred_raw = sess.run(Y_pred,feed_dict={X:image})[0].reshape((height,width,n_colors)) * 255
+        result = pred_raw
+        #result = np.stack((pred_raw,pred_raw,pred_raw),axis=0)
 
 
 

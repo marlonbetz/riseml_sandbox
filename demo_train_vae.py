@@ -106,7 +106,7 @@ with tf.Session() as sess:
 
         sess.run(optimizer,feed_dict={X:image})
 
-        pred_raw = sess.run(Y_pred,feed_dict={X:image})[0].reshape((height,width,n_colors)) * 255
+        pred_raw = sess.run(Y_pred,feed_dict={X:image})[0].reshape((n_colors,height,width)) * 255
         result = pred_raw
         #result = np.stack((pred_raw,pred_raw,pred_raw),axis=0)
 

@@ -11,12 +11,13 @@ import tensorflow as tf
 height = 128
 width = 128
 dim_hidden = 1024
-sigma_epsilon = 1
+log_var_epsilon = 1
 dim_latent = 2
+beta = 10
 
 X  = tf.placeholder(dtype=tf.float32, shape=[None,height*width])
 
-epsilon = tf.random_normal(shape=[tf.shape(X)[0],dim_latent],mean=0,stddev=sigma_epsilon)
+epsilon = tf.random_normal(shape=[tf.shape(X)[0],dim_latent],mean=0,stddev=log_var_epsilon)
 
 
 
@@ -36,22 +37,22 @@ b_mu = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
                         shape=[dim_latent],
                         name="b_mu")
 
-w_sigma = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
+w_log_var = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
                         shape=[dim_hidden,dim_latent],
-                        name="w_sigma")
+                        name="w_log_var")
 
-b_sigma = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
+b_log_var = tf.get_variable(initializer=tf.contrib.layers.xavier_initializer(),
                         shape=[dim_latent],
-                        name="b_sigma")
+                        name="b_log_var")
 
 mu = tf.matmul( tf.nn.relu(tf.matmul(X,w1_encoder)+b1_encoder),w_mu)+b_mu
 
 
-sigma = tf.matmul( tf.nn.relu(tf.matmul(X,w1_encoder)+b1_encoder),w_sigma)+b_sigma
+log_var = tf.matmul( tf.nn.relu(tf.matmul(X,w1_encoder)+b1_encoder),w_log_var)+b_log_var
 
-kl_divergence  = 0.5 * tf.reduce_sum( 1 + tf.log(tf.pow(sigma,2)) + tf.pow(mu,2) + tf.pow(sigma,2),axis=-1)
+kl_divergence  = 0.5 * tf.reduce_sum( 1 +log_var + tf.pow(mu,2) + tf.exp(log_var),axis=-1)
 
-z = mu + sigma * epsilon
+z = mu + tf.exp(log_var/2) * epsilon
 
 #decoder
 
@@ -78,7 +79,7 @@ Y_logits =  tf.matmul( tf.nn.relu(tf.matmul(z,w1_decoder)+b1_decoder),w2_decoder
 Y_pred = tf.nn.sigmoid(Y_logits)
 
 loss = tf.reduce_mean(
-    tf.reduce_sum(tf.nn.sigmoid_cross_entropy_with_logits(logits=Y_logits, labels=X), axis=-1) + kl_divergence)
+    tf.reduce_sum(tf.nn.sigmoid_cross_entropy_with_logits(logits=Y_logits, labels=X), axis=-1) + beta *  kl_divergence)
 
 optimizer = tf.train.AdamOptimizer().minimize(loss)
 

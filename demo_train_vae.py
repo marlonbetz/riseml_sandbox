@@ -8,8 +8,8 @@ import tensorflow as tf
 
 
 
-height = 128
-width = 128
+height = 256
+width = 256
 n_colors = 3
 dim_hidden = 1024
 log_var_epsilon = 1

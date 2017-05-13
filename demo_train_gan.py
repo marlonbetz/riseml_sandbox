@@ -5,18 +5,15 @@ from io import BytesIO
 import numpy as np
 import tensorflow as tf
 
-
 n_intermediate = 1024
 dim_z = 2
 height = 128
 width = 128
-n_features = height*width
+n_features = height * width
 
+n_samples = tf.placeholder(dtype=tf.int32, shape=[])
 
-n_samples  = tf.placeholder(dtype=tf.int32, shape=[])
-
-
-z = tf.random_uniform(shape=[n_samples,dim_z],minval=-1,maxval=1)
+z = tf.random_uniform(shape=[n_samples, dim_z], minval=-1, maxval=1)
 
 w1_generator = tf.get_variable(
     initializer=tf.contrib.layers.xavier_initializer(uniform=False, seed=None, dtype=tf.float32)
@@ -40,7 +37,6 @@ y_generator = tf.nn.sigmoid(
     tf.matmul(tf.nn.relu(tf.matmul(z, w1_generator) + b1_generator), w2_generator) + b2_generator)
 
 X_discriminator_true = tf.placeholder(dtype=tf.float32, shape=[None, n_features], name="X_discriminator_true")
-
 
 # X_discriminator_gen = tf.placeholder(dtype=tf.float32, shape=[None, n_features], name="X")
 
@@ -91,12 +87,8 @@ optimizer_discriminator = tf.train.AdamOptimizer().minimize(D_loss, var_list=the
 
 optimizer_generator = tf.train.AdamOptimizer().minimize(G_loss, var_list=theta_gen)
 
-
-
 with tf.Session() as sess:
     sess.run(tf.global_variables_initializer())
-
-
 
 
     def predict(input_image):
@@ -104,24 +96,19 @@ with tf.Session() as sess:
 
         input_image = input_image.resize((height, width), Image.ANTIALIAS)
 
-
-
-
         image = np.asarray(input_image, dtype=np.float32)
 
         image = image.transpose(2, 0, 1)
-        image = np.mean(image,axis=0).reshape((1,-1))
+        image = np.mean(image, axis=0).reshape((1, -1))
         image /= 255
 
-        sess.run(optimizer_discriminator, feed_dict={X_discriminator_true: image,
-                                                     n_samples: 1})
-        sess.run(optimizer_generator, feed_dict={n_samples :1})
+        for _ in range(10):
+            sess.run(optimizer_discriminator, feed_dict={X_discriminator_true: image,
+                                                         n_samples: 1})
+        sess.run(optimizer_generator, feed_dict={n_samples: 1})
 
-
-        pred_raw = sess.run(y_generator, feed_dict={n_samples :1})[0].reshape((height,width))  * 255
-        result = np.stack((pred_raw,pred_raw,pred_raw),axis=0)
-
-
+        pred_raw = sess.run(y_generator, feed_dict={n_samples: 1})[0].reshape((height, width)) * 255
+        result = np.stack((pred_raw, pred_raw, pred_raw), axis=0)
 
         result = result.transpose((1, 2, 0))
 
@@ -131,6 +118,7 @@ with tf.Session() as sess:
         med.save(output_image, format='JPEG')
         return output_image.getvalue()
 
-    #with open("test.jpg","rb") as f:
+
+    # with open("test.jpg","rb") as f:
     #    predict(f)
     riseml.serve(predict, port=os.environ.get('PORT'))

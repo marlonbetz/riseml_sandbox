@@ -51,7 +51,7 @@ mu = tf.matmul( tf.nn.relu(tf.matmul(X,w1_encoder)+b1_encoder),w_mu)+b_mu
 
 log_var = tf.matmul( tf.nn.relu(tf.matmul(X,w1_encoder)+b1_encoder),w_log_var)+b_log_var
 
-kl_divergence  = 0.5 * tf.reduce_sum( 1 +log_var + tf.pow(mu,2) + tf.exp(log_var),axis=-1)
+kl_divergence  = 0.5 * tf.reduce_sum( 1 +log_var - tf.pow(mu,2) - tf.exp(log_var),axis=-1)
 
 z = mu + tf.exp(log_var/2) * epsilon
 
